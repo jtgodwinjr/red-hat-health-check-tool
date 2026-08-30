@@ -1,0 +1,13 @@
+services:
+  backend:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - healthcheck-data:/data
+    environment:
+      - DJANGO_DEBUG=false
+      - DJANGO_SECRET_KEY=dev-secret-key-change-me
+
+volumes:
+  healthcheck-data:

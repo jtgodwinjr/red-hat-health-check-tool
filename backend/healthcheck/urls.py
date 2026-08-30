@@ -7,3 +7,6 @@ urlpatterns = [
     path("api/v1/reports/", include("reports.urls")),
     path("api/v1/wizard/", include("wizard.urls")),
 ]
+
+from healthcheck.startup import get_frontend_urls
+urlpatterns += get_frontend_urls()
