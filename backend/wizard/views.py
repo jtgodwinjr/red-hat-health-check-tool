@@ -7,16 +7,16 @@ from wizard.serializers import WizardStateSerializer
 
 class WizardStateView(APIView):
     def get(self, request):
-        state, _ = WizardState.objects.get_or_create(
-            defaults={"current_step": 1, "completed_steps": [], "data": {}}
-        )
+        state = WizardState.objects.first()
+        if state is None:
+            state = WizardState.objects.create(current_step=1, completed_steps=[], data={})
         serializer = WizardStateSerializer(state)
         return Response(serializer.data)
 
     def put(self, request):
-        state, _ = WizardState.objects.get_or_create(
-            defaults={"current_step": 1, "completed_steps": [], "data": {}}
-        )
+        state = WizardState.objects.first()
+        if state is None:
+            state = WizardState.objects.create(current_step=1, completed_steps=[], data={})
         serializer = WizardStateSerializer(state, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()

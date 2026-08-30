@@ -1,6 +1,7 @@
 import csv
 import io
 from collections import Counter
+from html import escape
 from scans.models import Scan, ScanResult
 from reports.models import Report
 
@@ -67,13 +68,13 @@ def generate_pdf(report: Report) -> bytes:
     for r in results:
         rows += f"""
         <tr>
-            <td>{r.host}</td>
-            <td>{r.status}</td>
-            <td>{r.data.get('os', '')}</td>
-            <td>{r.data.get('hostname', '')}</td>
-            <td>{r.data.get('kernel', '')}</td>
-            <td>{', '.join(r.data.get('products', []))}</td>
-            <td>{r.error_message}</td>
+            <td>{escape(r.host)}</td>
+            <td>{escape(r.status)}</td>
+            <td>{escape(r.data.get('os', ''))}</td>
+            <td>{escape(r.data.get('hostname', ''))}</td>
+            <td>{escape(r.data.get('kernel', ''))}</td>
+            <td>{escape(', '.join(r.data.get('products', [])))}</td>
+            <td>{escape(r.error_message or '')}</td>
         </tr>"""
 
     summary = report.summary

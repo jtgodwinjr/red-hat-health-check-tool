@@ -16,6 +16,7 @@ import { WizardData } from "./types";
 interface Report {
   id: number;
   title: string;
+  scan: number;
   summary: {
     total_hosts: number;
     successful_hosts: number;
@@ -39,17 +40,12 @@ export function StepResults({ data, onUpdate, onReset }: StepResultsProps) {
   useEffect(() => {
     if (data.scan_id) {
       apiClient
-        .get<{ report: { id: number } }>(`/scans/${data.scan_id}/`)
-        .then((scan) => {
-          if (scan.report) {
-            return apiClient.get<Report>(`/reports/${scan.report.id}/`);
-          }
-          return apiClient.get<Report[]>("/reports/").then((reports) => reports[0]);
-        })
-        .then((r) => {
-          if (r) {
-            setReport(r);
-            onUpdate({ report_id: r.id });
+        .get<Report[]>("/reports/")
+        .then((reports) => {
+          const matchingReport = reports.find((r) => r.scan === data.scan_id);
+          if (matchingReport) {
+            setReport(matchingReport);
+            onUpdate({ report_id: matchingReport.id });
           }
         })
         .catch(() => {})

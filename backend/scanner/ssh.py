@@ -1,5 +1,5 @@
+import os
 import subprocess
-import shlex
 
 
 def _parse_os_release(content: str) -> dict:
@@ -13,15 +13,17 @@ def _parse_os_release(content: str) -> dict:
 
 def _ssh_exec(host: str, port: int, credential, command: str, timeout: int = 30) -> str:
     ssh_cmd = ["ssh", "-o", "StrictHostKeyChecking=no", "-o", "ConnectTimeout=10", "-p", str(port)]
+    env = os.environ.copy()
 
     if credential.credential_type == "ssh_key":
         ssh_cmd += ["-i", credential.ssh_key_file]
     elif credential.credential_type == "password":
-        ssh_cmd = ["sshpass", "-p", credential.get_secret()] + ssh_cmd
+        ssh_cmd = ["sshpass", "-e"] + ssh_cmd
+        env["SSHPASS"] = credential.get_secret()
 
     ssh_cmd += [f"{credential.username}@{host}", command]
 
-    result = subprocess.run(ssh_cmd, capture_output=True, text=True, timeout=timeout)
+    result = subprocess.run(ssh_cmd, capture_output=True, text=True, timeout=timeout, env=env)
     if result.returncode != 0:
         raise RuntimeError(f"SSH command failed on {host}: {result.stderr.strip()}")
     return result.stdout.strip()
