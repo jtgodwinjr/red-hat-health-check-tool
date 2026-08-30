@@ -1,0 +1,108 @@
+:root {
+  --rh-red: #EE0000;
+  --rh-red-dark: #A30000;
+  --rh-black-900: #151515;
+  --rh-black-850: #212427;
+  --rh-black-600: #4F5255;
+  --rh-black-400: #6A6E73;
+  --rh-black-200: #D2D2D2;
+  --rh-black-100: #F0F0F0;
+  --rh-blue: #0066CC;
+  --rh-blue-light: #73BCF7;
+  --rh-green: #3E8635;
+  --rh-gold: #F0AB00;
+
+  --pf-t--global--color--brand--default: var(--rh-red);
+  --pf-t--global--color--brand--hover: var(--rh-red-dark);
+}
+
+.pf-v6-c-page__sidebar {
+  --pf-v6-c-page__sidebar--BackgroundColor: var(--rh-black-900);
+}
+
+.pf-v6-c-masthead {
+  --pf-v6-c-masthead--BackgroundColor: var(--rh-black-850);
+}
+
+.pf-v6-c-nav__link.pf-m-current {
+  --pf-v6-c-nav__link--m-current--after--BorderColor: var(--rh-red);
+}
+
+.pf-v6-c-button.pf-m-primary {
+  --pf-v6-c-button--m-primary--BackgroundColor: var(--rh-red);
+  --pf-v6-c-button--m-primary--hover--BackgroundColor: var(--rh-red-dark);
+}
+
+.rh-score-card {
+  text-align: center;
+  padding: 1rem;
+}
+
+.rh-score-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.rh-score-label {
+  font-size: 0.875rem;
+  color: var(--rh-black-400);
+  margin-top: 0.25rem;
+}
+
+.rh-benchmark-section {
+  margin-top: 1.5rem;
+}
+
+.rh-category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.rh-check-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+}
+
+.rh-check-list li {
+  padding: 0.35rem 0;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rh-overall-banner {
+  background: var(--rh-black-900);
+  color: white;
+  border-radius: 8px;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.rh-overall-score {
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--rh-red);
+}
+
+.rh-overall-label {
+  font-size: 1.25rem;
+  margin-top: 0.25rem;
+}
+
+.rh-avg-comparison {
+  text-align: right;
+  color: var(--rh-black-200);
+}
+
+.rh-avg-comparison .avg-value {
+  font-size: 2rem;
+  font-weight: 600;
+}

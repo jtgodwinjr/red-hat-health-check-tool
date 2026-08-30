@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import "@patternfly/react-core/dist/styles/base.css";
+import "./theme/redhat-overrides.css";
 import App from "./App";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
