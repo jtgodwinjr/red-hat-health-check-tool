@@ -1,10 +1,6 @@
 from django.utils import timezone
 from huey.contrib.djhuey import task
-
-
-def scan_host(host: str, port: int, credential, source_type: str, scan_type: str) -> dict:
-    """Placeholder for scanner logic — implemented in Task 6."""
-    raise NotImplementedError("Scanner not yet implemented")
+from scanner.registry import scan_host
 
 
 @task()
