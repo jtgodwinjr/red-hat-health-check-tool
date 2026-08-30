@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "scans",
     "reports",
     "wizard",
+    "benchmarks",
 ]
 
 MIDDLEWARE = [

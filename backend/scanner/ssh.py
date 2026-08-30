@@ -56,6 +56,50 @@ def scan(host: str, port: int, credential, scan_type: str) -> dict:
         "subscriptions": [],
     }
 
+    # Security posture checks
+    try:
+        selinux_raw = _ssh_exec(host, port, credential, "getenforce 2>/dev/null || echo Disabled")
+        data["selinux_status"] = selinux_raw.strip()
+    except Exception:
+        data["selinux_status"] = "Unknown"
+
+    try:
+        firewall_raw = _ssh_exec(host, port, credential, "systemctl is-active firewalld 2>/dev/null || echo inactive")
+        data["firewall_active"] = firewall_raw.strip() == "active"
+    except Exception:
+        data["firewall_active"] = False
+
+    try:
+        fips_raw = _ssh_exec(host, port, credential, "cat /proc/sys/crypto/fips_enabled 2>/dev/null || echo 0")
+        data["fips_enabled"] = fips_raw.strip() == "1"
+    except Exception:
+        data["fips_enabled"] = False
+
+    try:
+        updates_raw = _ssh_exec(host, port, credential, "dnf check-update --quiet 2>/dev/null | wc -l || echo -1")
+        count = int(updates_raw.strip()) if updates_raw.strip().lstrip('-').isdigit() else -1
+        data["pending_updates"] = max(0, count)
+    except Exception:
+        data["pending_updates"] = -1
+
+    try:
+        root_ssh = _ssh_exec(host, port, credential, "grep -i '^PermitRootLogin' /etc/ssh/sshd_config 2>/dev/null | head -1 || echo 'not set'")
+        data["root_login_disabled"] = "no" in root_ssh.lower()
+    except Exception:
+        data["root_login_disabled"] = False
+
+    try:
+        audit_raw = _ssh_exec(host, port, credential, "systemctl is-active auditd 2>/dev/null || echo inactive")
+        data["audit_logging"] = audit_raw.strip() == "active"
+    except Exception:
+        data["audit_logging"] = False
+
+    try:
+        crypto_raw = _ssh_exec(host, port, credential, "update-crypto-policies --show 2>/dev/null || echo UNKNOWN")
+        data["crypto_policy"] = crypto_raw.strip()
+    except Exception:
+        data["crypto_policy"] = "Unknown"
+
     if scan_type == "deep":
         try:
             sub_raw = _ssh_exec(host, port, credential, "subscription-manager list --consumed 2>/dev/null || echo 'N/A'")

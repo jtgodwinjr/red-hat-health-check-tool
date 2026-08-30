@@ -4,6 +4,7 @@ from collections import Counter
 from html import escape
 from scans.models import Scan, ScanResult
 from reports.models import Report
+from benchmarks.scoring import score_scan_results
 
 
 def generate_report(scan: Scan) -> Report:
@@ -27,6 +28,9 @@ def generate_report(scan: Scan) -> Report:
         "os_distribution": dict(os_counter),
         "products_found": dict(product_counter),
     }
+
+    benchmark = score_scan_results(list(results))
+    summary["benchmark"] = benchmark
 
     report = Report.objects.create(
         scan=scan,
