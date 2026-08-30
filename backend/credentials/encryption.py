@@ -11,6 +11,7 @@ def get_or_create_fernet_key() -> bytes:
     key = Fernet.generate_key()
     key_path.parent.mkdir(parents=True, exist_ok=True)
     key_path.write_bytes(key)
+    key_path.chmod(0o600)  # Owner read/write only
     return key
 
 

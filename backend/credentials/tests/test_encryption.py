@@ -1,4 +1,5 @@
 from credentials.encryption import encrypt_value, decrypt_value, get_or_create_fernet_key
+import credentials.encryption as enc_module
 
 
 def test_encrypt_decrypt_roundtrip():
@@ -16,6 +17,7 @@ def test_encrypt_produces_different_ciphertext_each_call():
 
 
 def test_fernet_key_persists(tmp_path, settings):
+    enc_module._fernet_instance = None  # Reset cached instance
     settings.FERNET_KEY_PATH = tmp_path / "test_fernet.key"
     key1 = get_or_create_fernet_key()
     key2 = get_or_create_fernet_key()
