@@ -48,6 +48,9 @@ def run_scan(scan_id: int) -> None:
         scan.progress["completed_hosts"] += 1
         scan.save()
 
+    from reports.generators import generate_report
+    generate_report(scan)
+
     scan.status = "completed"
     scan.completed_at = timezone.now()
     scan.save()
